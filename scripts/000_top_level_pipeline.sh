@@ -14,10 +14,19 @@
 ./scripts/repeatmasking.sh
 
 #download and qc 50 sample RNAseq data set
-./scripts/qc_vesca_transcriptome.sh
+./scripts/qc_rnaseq_50samples.sh
+
+#qc 6 sample RNAseq data set
+./scripts/qc_rnaseq_6samples.sh
+
+#remove mildew contamination from 6 sample RNAseq data set
+./scripts/remove_mildew_6samples.sh
 
 #create reference guided transcripts using tophat/cufflinks
 ./scripts/tuxedo_transcriptome.sh
 
 #augustus without hints using arabidopsis model
 ./scripts/augustus_nohints.sh
+
+#augustus with hints
+./scripts/augustus_hints.sh

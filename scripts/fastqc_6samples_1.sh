@@ -8,10 +8,10 @@
 #$ -l virtual_free=2G
 #$ -l h_rt=999:00:00
 #$ -l h=blacklace04.blacklace|blacklace05.blacklace|blacklace03.blacklace
-#$ -t 1-50
-#$ -tc 5
+#$ -t 1-12
+#$ -tc 6
 
-fastq=$(ls -1 ./vesca_transcriptome/SRR*.fastq|head -n ${SGE_TASK_ID}|tail -n 1)
+fastq=$(ls -1 ./jd_rnaseq/*.fq|head -n ${SGE_TASK_ID}|tail -n 1)
 sample=$(basename ${fastq} .fastq)
 outdir=./fastqc/${sample}_rnaqc1
 
