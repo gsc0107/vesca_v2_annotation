@@ -18,15 +18,18 @@ set -eu
 export PATH=${PATH}:/home/vicker/programs/bowtie2-2.2.3
 #export PATH=${PATH}:/home/vicker/programs/samtools-1.1
 
-tophat=''
-#cufflinks='/home/vicker/programs/cufflinks-2.2.1.Linux_x86_64/cufflinks'
+fastq1=$(ls -1S ./jd_rnaseq_qc2/*_R1.fq | head -n ${SGE_TASK_ID} | tail -n 1)
+fastq2=$(echo ${fastq1} | sed 's/_R1/_R2/g')
+sample=$(basename ${fastq1} _R1.fq)
+outdir=./tophat_mildew/${sample}
+ref=./downy_mildew/mildew_unmasked.fa
+
+echo sample is ${sample}, fastqs are ${fastq1} ${fastq2}, outdir is ${outdir}
+mkdir -p ${outdir}
 
 #mildew
-#full path might be needed here
-ref='/home/vicker/vesca_annotation/downy_mildew/GCA_000151065.3_ASM15106v3_genomic.fa'
-outdir='/home/vicker/vesca_annotation/tophat_mildew_@{sample}'
 /home/vicker/programs/tophat-2.0.13.Linux_x86_64/tophat\
     --no-coverage-search\
     -o ${outdir}\
     ${ref}\
-    @{reads1} @{reads2}
+    ${fastq1} ${fastq2}

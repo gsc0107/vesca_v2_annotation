@@ -1,18 +1,16 @@
 #$ -S /bin/bash
-#$ -N cufflinks_6samples
+#$ -N cufflinks50_3batch
 #$ -o logs/$JOB_NAME.$JOB_ID.$TASK_ID.out
 #$ -e logs/$JOB_NAME.$JOB_ID.$TASK_ID.err
 #$ -cwd
-#$ -l h_vmem=6G
-#$ -l mem_free=6G
-#$ -l virtual_free=6G
+#$ -l h_vmem=7G
+#$ -l mem_free=7G
+#$ -l virtual_free=7G
 #$ -l h_rt=999:00:00
 #$ -l h=blacklace03.blacklace|blacklace04.blacklace|blacklace05.blacklace
-#$ -t 1-6
-#$ -tc 6
-
-# wait for corresponding tophat job to complete
-#$ -hold_jid_ad tophat_6samples
+#$ -t 1-3
+#$ -tc 1
+#$ -hold_jid_ad tophat50_3batch
 
 # assemble RNA seq data using tophat/cufflinks
 
@@ -25,14 +23,12 @@ export PATH=${PATH}:/home/vicker/programs/cufflinks-2.2.1.Linux_x86_64
 
 ref=./refseq/unmasked.fa
 
-#process largest files first
-fastq1=$(ls -1S ./tophat_mildew/*/*_R1.fq | head -n ${SGE_TASK_ID} | tail -n 1)
-fastq2=$(echo ${fastq1} | sed 's/_R1/_R2/g')
-sample=$(echo ${fastq1} | cut -d '/' -f 3)
+#name of current batch
+sample=$(head -n ${SGE_TASK_ID} ./auxfiles/50samples_grouping_names | tail -n 1)
+
 outdir=tuxedo/${sample}
 
-echo sample is ${sample}, fastqs are ${fastq1} ${fastq2}, outdir is ${outdir}
-
+echo sample is ${sample}, outdir is ${outdir}
 mkdir -p ${outdir}
 
 /home/vicker/programs/cufflinks-2.2.1.Linux_x86_64/cufflinks\

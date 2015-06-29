@@ -1,15 +1,15 @@
 #$ -S /bin/bash
-#$ -N tophat_6samples
+#$ -N tophat50_3batch
 #$ -o logs/$JOB_NAME.$JOB_ID.$TASK_ID.out
 #$ -e logs/$JOB_NAME.$JOB_ID.$TASK_ID.err
 #$ -cwd
-#$ -l h_vmem=3G
-#$ -l mem_free=3G
-#$ -l virtual_free=3G
+#$ -l h_vmem=5G
+#$ -l mem_free=5G
+#$ -l virtual_free=5G
 #$ -l h_rt=999:00:00
 #$ -l h=blacklace03.blacklace|blacklace04.blacklace|blacklace05.blacklace
-#$ -t 1-6
-#$ -tc 6
+#$ -t 1-3
+#$ -tc 1
 
 # assemble RNA seq data using tophat/cufflinks
 
@@ -22,13 +22,23 @@ export PATH=${PATH}:/home/vicker/programs/cufflinks-2.2.1.Linux_x86_64
 
 ref=./refseq/unmasked.fa
 
-#process largest files first
-fastq1=$(ls -1S ./tophat_mildew/*/*_R1.fq | head -n ${SGE_TASK_ID} | tail -n 1)
-fastq2=$(echo ${fastq1} | sed 's/_R1/_R2/g')
-sample=$(echo ${fastq1} | cut -d '/' -f 3)
+#name of current batch
+sample=$(head -n ${SGE_TASK_ID} ./auxfiles/50samples_grouping_names | tail -n 1)
+
+#list of sample names to process in current batch
+samplenames=$(head -n ${SGE_TASK_ID} ./auxfiles/50samples_grouping | tail -n 1)
+
+#convert from sample names into fastq file names
+fastqs=$(\
+for x in $(echo ${samplenames} | tr ',' ' ')
+do
+    grep ${x} ./auxfiles/samplename2srrnumber.csv | cut -d ',' -f 1
+done\
+| awk '{if(NR>1){printf","};printf "./rna_qc2/%s_1.fastq",$0}' )
+
 outdir=tuxedo/${sample}
 
-echo sample is ${sample}, fastqs are ${fastq1} ${fastq2}, outdir is ${outdir}
+echo sample is ${sample}, fastqs are ${fastqs}, outdir is ${outdir}
 mkdir -p ${outdir}
 
 /home/vicker/programs/tophat-2.0.13.Linux_x86_64/tophat\
@@ -37,5 +47,4 @@ mkdir -p ${outdir}
     --max-intron-length 2000\
     --max-multihits 1\
     --b2-very-sensitive\
-    -o ${outdir} ${ref}\
-    ${fastq1} ${fastq2}
+    -o ${outdir} ${ref} ${fastqs}

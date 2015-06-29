@@ -23,7 +23,10 @@
 ./scripts/remove_mildew_6samples.sh
 
 #create reference guided transcripts using tophat/cufflinks
-./scripts/tuxedo_transcriptome.sh
+./scripts/tuxedo_all_samples.sh
+
+#create denovo assembled transcripts using trinity
+./scripts/trinity_all_samples.sh
 
 #augustus without hints using arabidopsis model
 ./scripts/augustus_nohints.sh
