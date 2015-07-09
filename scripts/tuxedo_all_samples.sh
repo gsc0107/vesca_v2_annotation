@@ -15,15 +15,17 @@ export PATH=${PATH}:/home/vicker/programs/cufflinks-2.2.1.Linux_x86_64
     ./refseq/unmasked.fa
 
 #run tophat+cufflinks on SRA065786 dataset
+#map samples individually
 qsub ./scripts/tophat_50samples.sh
 qsub ./scripts/cufflinks_50samples.sh
 
-#run tophat+cufflinks on SRA065786 dataset pooled into 3 batches
+#run tophat+cufflinks on SRA065786 dataset
+#treat data pooled into 3 batches (achene, receptacle, vegetative)
 qsub ./scripts/tophat_50samples_3batch.sh
 qsub ./scripts/cufflinks_50samples_3batch.sh
 
-
 #run tophat+cufflinks on JD dataset
+#treat each sample separately
 qsub ./scripts/tophat_6samples.sh
 qsub ./scripts/cufflinks_6samples.sh
 

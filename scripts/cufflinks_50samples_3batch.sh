@@ -1,18 +1,20 @@
 #$ -S /bin/bash
-#$ -N cufflinks50_3batch
 #$ -o logs/$JOB_NAME.$JOB_ID.$TASK_ID.out
 #$ -e logs/$JOB_NAME.$JOB_ID.$TASK_ID.err
-#$ -cwd
-#$ -l h_vmem=7G
-#$ -l mem_free=7G
-#$ -l virtual_free=7G
+#$ -l h_vmem=45G
+#$ -l mem_free=45G
+#$ -l virtual_free=45G
 #$ -l h_rt=999:00:00
-#$ -l h=blacklace03.blacklace|blacklace04.blacklace|blacklace05.blacklace
-#$ -t 1-3
-#$ -tc 1
-#$ -hold_jid_ad tophat50_3batch
+#$ -t 2
+#$ -tc 2
+##$ -hold_jid_ad tophat50_3batch
+###$ -l h=blacklace03.blacklace|blacklace04.blacklace|blacklace05.blacklace
 
 # assemble RNA seq data using tophat/cufflinks
+
+#ram usage:
+#task1 14G
+#task2 > 14G
 
 set -eu
 set -o pipefail
