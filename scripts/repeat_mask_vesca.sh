@@ -20,4 +20,4 @@ set -o pipefail
 ~/programs/repeat_masker/RepeatMasker/RepeatMasker\
     -species "Fragaria vesca"\
     -gff\
-    ./refseq/unmasked.fa
+    ./refseq/Fragaria_vesca_v2.0.a1_pseudomolecules.fasta
