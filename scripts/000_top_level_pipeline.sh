@@ -33,3 +33,6 @@
 
 #augustus with hints
 ./scripts/augustus_hints.sh
+
+#collect stats on the various outputs produced above
+./scripts/collect_stats.sh
