@@ -28,6 +28,9 @@
 #create denovo assembled transcripts using trinity
 ./scripts/trinity_all_samples.sh
 
+#repeat mask denovo assembled transcripts using repeat masker
+./scripts/repeat_mask_transcriptomes.sh
+
 #augustus without hints using arabidopsis model
 ./scripts/augustus_nohints.sh
 
